@@ -1,76 +1,115 @@
-<GridLayout>:
-    col: 1
-    rows: 2
-    spacing: 10
-    padding: 10
 
-    FileChooser:
-        # FileChooserIconLayout
-        FileChooserListLayout
+<ScreenTwo>:
+    GridLayout:
+        col: 1
+        rows: 2
+        spacing: 10
+        padding: 10
 
+        FileChooser:
+            FileChooserListLayout
+
+        BoxLayout:
+            height: 150
+            orientation: 'vertical'
+            size_hint_y: None
+
+            BoxLayout:
+                orientation: 'horizontal'
+                Label:
+                    text: ''
+
+
+                Label:
+                    text: ''
+
+                Label:
+                    text: ''
+
+                Label:
+                    text: 'Source backup'
+
+                Label:
+                    text: 'Output backup'
+
+                Label:
+                    text: 'Sample'
+
+
+            BoxLayout:
+                orientation: 'horizontal'
+                Button:
+                    text: 'Run'
+                    width: 200
+
+                Button:
+                    text: 'Source backup'
+
+                Button:
+                    text: 'Output backup'
+                    on_press: app.method()
+
+                CheckBox:
+                    text: 'Run with source backup'
+
+                CheckBox:
+                    text: 'Run with output backup'
+
+                Label:
+                    id: label_1
+                    text: app.label_1
+
+            BoxLayout:
+
+                orientation: 'horizontal'
+                Label:
+
+                    id: 'path_label'
+                    height: '32dp'
+                    text: 'Input path'
+
+                Button:
+                    size_hint_x: None
+                    text: 'Output path'
+                    width: 100
+
+            BoxLayout:
+
+                orientation: 'horizontal'
+                Label:
+
+                    id: 'path_label'
+                    height: '32dp'
+                    text: 'Backup path'
+
+                Button:
+                    size_hint_x: None
+                    text: 'Backup path'
+                    width: 100
+
+
+<ScreenOne>:
     BoxLayout:
-        height: 100
         orientation: 'vertical'
-        size_hint_y: None
 
-        BoxLayout:
-            orientation: 'horizontal'
-            Label:
-                text: ''
+        Image:
+            source: 'C:\start.jpg'
+        Button:
+            size_hint_y: None
+            height: 50
+            text: 'Start'
+            on_press: root.manager.current= 'screen2'
 
+<Manager>:
+    id: screen_manager
+    ScreenOne:
+        id: screen_one
+        name: 'screen1'
+        manager: screen_manager
 
-            Label:
-                text: ''
-
-            Label:
-                text: ''
-
-            Label:
-                text: 'Source backup'
-
-            Label:
-                text: 'Output backup'
-
-            Label:
-                text: 'Sample'
-
-
-        BoxLayout:
-            orientation: 'horizontal'
-            Button:
-                text: 'Run'
-                width: 200
-
-            Button:
-                text: 'Source backup'
-
-            Button:
-                text: 'Output backup'
-                on_press: app.method()
-
-            CheckBox:
-                text: 'Run with source backup'
-
-            CheckBox:
-                text: 'Run with output backup'
-
-            Label:
-                id: label_1
-                text: ''
-
-        BoxLayout:
-
-            orientation: 'horizontal'
-            Label:
-
-                id: 'path_label'
-                height: '32dp'
-                text: 'Input path'
-
-            Button:
-                size_hint_x: None
-                text: 'Output path'
-                width: 100
-
+    ScreenTwo:
+        id: screen_two
+        name: 'screen2'
+        manager: screen_manager
 
 

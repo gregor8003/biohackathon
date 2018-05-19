@@ -1,0 +1,163 @@
+
+<ScreenTwo>:
+    GridLayout:
+        col: 1
+        rows: 2
+        spacing: 10
+        padding: 10
+
+        BoxLayout:
+            orientation: 'horizontal'
+            FileChooserListView:
+                id: filechooser_input
+
+            FileChooserListView:
+                id: filechooser_output
+
+            BoxLayout:
+                canvas:
+                    Color:
+                        rgb: 0.22, 0.22, 0.22
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+
+                size_hint_x: None
+                width: 80
+                orientation: 'vertical'
+                Label:
+                    text: '.bam'
+                CheckBox:
+                    active: True
+                    on_active: app.bam_clicked()
+
+
+                Label:
+                    text: '.bam.bai'
+                CheckBox:
+                    active: True
+                    on_active: app.bambai_clicked()
+
+                Label:
+                    text: '.vcf'
+                CheckBox:
+                    active: True
+                    on_active: app.vcf_clicked()
+
+                Label:
+                    text: '.vcf.gz'
+
+                CheckBox:
+                    active: True
+                    on_active: app.vcfgz_clicked()
+
+        BoxLayout:
+            height: 150
+            orientation: 'vertical'
+            size_hint_y: None
+
+            BoxLayout:
+                orientation: 'horizontal'
+                Label:
+                    text: ''
+
+
+                Label:
+                    text: ''
+
+                Label:
+                    text: ''
+
+                Label:
+                    text: 'Source backup'
+
+                Label:
+                    text: 'Output backup'
+
+                Label:
+                    text: 'Sample'
+
+
+            BoxLayout:
+                orientation: 'horizontal'
+                Button:
+                    text: 'Run'
+                    width: 200
+                    on_press: app.run_operations()
+
+                Button:
+                    text: 'Source backup'
+                    on_press: app.output_manager.make_backup_input_files()
+
+                Button:
+                    text: 'Output backup'
+                    on_press: app.output_manager.make_backup_output_files()
+
+                CheckBox:
+                    text: 'Run with source backup'
+                    on_active: app.checkbox_clicked()
+
+                CheckBox:
+                    text: 'Run with output backup'
+                    on_active: app.checkbox_output_clicked()
+
+                Label:
+                    id: sample_label
+                    text: app.sample_label
+
+            BoxLayout:
+
+                orientation: 'horizontal'
+                Label:
+
+                    id: 'input_path_label'
+                    height: '32dp'
+                    text: app.output_path
+
+
+                Button:
+                    size_hint_x: None
+                    text: 'Output path'
+                    width: 100
+
+            BoxLayout:
+
+                orientation: 'horizontal'
+                Label:
+
+                    id: 'path_label'
+                    height: '32dp'
+                    text: app.backup_path
+
+                Button:
+                    size_hint_x: None
+                    text: 'Backup path'
+                    width: 100
+
+
+<ScreenOne>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        Image:
+            source: 'start.jpg'
+        Button:
+            size_hint_y: None
+            height: 50
+            text: 'Start'
+            on_press: root.manager.current= 'screen2'
+
+<Manager>:
+    id: screen_manager
+    ScreenOne:
+        id: screen_one
+        name: 'screen1'
+        manager: screen_manager
+
+    ScreenTwo:
+        id: screen_two
+        name: 'screen2'
+        manager: screen_manager
+
+

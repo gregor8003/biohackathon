@@ -1,0 +1,133 @@
+import kivy
+import os
+from kivy.properties import NumericProperty, ObjectProperty
+
+from output_location import OutputLocationManager
+
+kivy.require('1.0.6') # replace with your current kivy version !
+
+from kivy.app import App
+from kivy.uix.screenmanager import ScreenManager, Screen
+
+class ScreenOne(Screen):
+    pass
+
+class ScreenTwo(Screen):
+
+    def is_dir(self, directory, filename):
+        return os.path.isdir(os.path.join(directory, filename))
+
+
+class Manager(ScreenManager):
+    screen_one = ObjectProperty(None)
+    screen_two = ObjectProperty(None)
+
+class Archiver(App):
+    list_ext = []
+    label_1 = '0'
+
+    input_path = 'C:\Test\Input'
+    output_path = 'C:\Test\Output'
+    backup_path = 'C:\Test\Backup'
+
+    output_manager = OutputLocationManager(input_path, output_path, backup_path)
+
+    checkbox_is_active = False
+
+    def checkbox_clicked(self):
+        if not self.checkbox_is_active:
+            self.checkbox_is_active = True
+        else:
+            self.checkbox_is_active = False
+
+        print ('checkbox: ', self.checkbox_is_active)
+
+    checkbox_output_is_active = False
+
+    def checkbox_output_clicked(self):
+        if not self.checkbox_output_is_active:
+            self.checkbox_output_is_active = True
+        else:
+            self.checkbox_output_is_active = False
+
+        print ('checkbox: ', self.checkbox_output_is_active)
+
+
+    bam_is_active = True
+    bambai_is_active = True
+    vcf_is_active = True
+    vcfgz_is_active = True
+
+    def bam_clicked(self):
+        if not self.bam_is_active:
+            self.bam_is_active = True
+        else:
+            self.bam_is_active = False
+        print ('bam ', self.bam_is_active)
+
+    def bambai_clicked(self):
+        if not self.bambai_is_active:
+            self.bambai_is_active = True
+        else:
+            self.bambai_is_active = False
+        print ('bambai ', self.bambai_is_active)
+
+    def vcf_clicked(self):
+        if not self.vcf_is_active:
+            self.vcf_is_active = True
+        else:
+            self.vcf_is_active = False
+        print ('vcf', self.vcf_is_active)
+
+    def vcfgz_clicked(self):
+        if not self.vcfgz_is_active:
+            self.vcfgz_is_active = True
+        else:
+            self.vcfgz_is_active = False
+        print ('vcfgz', self.vcfgz_is_active)
+
+    def make_list_ext(self):
+        self.list_ext = []
+
+        if self.bam_is_active:
+            self.list_ext.append('.bam')
+
+        if self.bambai_is_active:
+            self.list_ext.append('.bam.bai')
+
+        if self.vcf_is_active:
+            self.list_ext.append('.vcf')
+
+        if self.vcfgz_is_active:
+            self.list_ext.append('.vcf.gz')
+
+        self.output_manager.set_preferred_extensions(self.list_ext)
+        print (self.list_ext)
+        return self.list_ext
+
+    def run_operations(self):
+        self.make_list_ext()
+        print(self.list_ext)
+        if self.checkbox_is_active and self.checkbox_output_is_active:
+            self.output_manager.make_output_files()
+            self.output_manager.make_backup_input_files()
+            self.output_manager.make_output_files()
+        elif self.checkbox_is_active:
+            self.output_manager.make_output_files()
+            self.output_manager.make_backup_input_files()
+        else:
+            self.output_manager.make_output_files()
+
+    if output_manager:
+        sample_label = str(output_manager.number_of_samples)
+
+    def method(self):
+        a = 1 + 1
+        print('output_manager')
+        return a
+
+    def build(self):
+        return Manager()
+
+if __name__ == '__main__':
+    Archiver().run()

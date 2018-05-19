@@ -51,6 +51,9 @@ class OutputLocationManager:
         if backup_path is not None:
             self.backup_path = backup_path
 
+    def set_preferred_extensions(self, preferred_extensions):
+        self.preferred_extensions = preferred_extensions
+
     def make_output_files(self):
         print('in output')
         for subdir_basename, subdir_extensions in self._subdirs.items():

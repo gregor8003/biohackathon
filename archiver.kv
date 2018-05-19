@@ -10,9 +10,11 @@
             orientation: 'horizontal'
             FileChooserListView:
                 id: filechooser_input
+                path: app.input_path
 
             FileChooserListView:
                 id: filechooser_output
+                path: app.output_path
 
             BoxLayout:
                 canvas:
@@ -85,6 +87,8 @@
                     text: 'Run'
                     width: 200
                     on_press: app.run_operations()
+                    on_press: app.get_input_path(filechooser_input.path, app.output_manager)
+                    on_press: app.get_output_path(filechooser_output.path, app.output_manager)
 
                 Button:
                     text: 'Source backup'
@@ -97,6 +101,9 @@
                 CheckBox:
                     text: 'Run with source backup'
                     on_active: app.checkbox_clicked()
+                    on_active: app.get_output_path(filechooser_output.path, app.output_manager)
+                    on_active: app.get_input_path(filechooser_input.path, app.output_manager)
+
 
                 CheckBox:
                     text: 'Run with output backup'
@@ -113,7 +120,7 @@
 
                     id: 'input_path_label'
                     height: '32dp'
-                    text: app.output_path
+                    text: filechooser_output.path
 
 
                 Button:

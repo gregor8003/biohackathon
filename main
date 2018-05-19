@@ -22,6 +22,7 @@ class Manager(ScreenManager):
     screen_one = ObjectProperty(None)
     screen_two = ObjectProperty(None)
 
+
 class Archiver(App):
     list_ext = []
     label_1 = '0'
@@ -29,6 +30,14 @@ class Archiver(App):
     input_path = 'C:\Test\Input'
     output_path = 'C:\Test\Output'
     backup_path = 'C:\Test\Backup'
+
+    def get_input_path(self, path, output_manager):
+        output_manager.input_path = path
+        print('input path = ', output_manager.input_path)
+
+    def get_output_path(self, path, output_manager):
+        output_manager.output_path = path
+        print('output path = ', output_manager.output_path)
 
     output_manager = OutputLocationManager(input_path, output_path, backup_path)
 
@@ -41,6 +50,7 @@ class Archiver(App):
             self.checkbox_is_active = False
 
         print ('checkbox: ', self.checkbox_is_active)
+        print (self.output_path)
 
     checkbox_output_is_active = False
 
@@ -106,8 +116,11 @@ class Archiver(App):
         return self.list_ext
 
     def run_operations(self):
+        print('Running operations')
         self.make_list_ext()
-        print(self.list_ext)
+        print('Extentions list: ', self.list_ext)
+        print('Input path = ', self.output_manager.input_path)
+        print('Output path = ', self.output_manager.output_path)
         if self.checkbox_is_active and self.checkbox_output_is_active:
             self.output_manager.make_output_files()
             self.output_manager.make_backup_input_files()
@@ -117,6 +130,7 @@ class Archiver(App):
             self.output_manager.make_backup_input_files()
         else:
             self.output_manager.make_output_files()
+        print('Run operations finished')
 
     if output_manager:
         sample_label = str(output_manager.number_of_samples)

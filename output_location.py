@@ -1,6 +1,9 @@
+from datetime import datetime
+from zipfile import ZipFile
 import collections
 import os
 import shutil
+import zipfile
 
 
 class OutputLocationManager:
@@ -63,13 +66,37 @@ class OutputLocationManager:
                 self.copy_output_file(input_path, subdir_output_path)
                 print('done')
 
-    def make_backup_files(self):
-        for input_file_path in self.input_filelist:
-            _, backup_file_base = os.path.split(input_file_path)
-            backup_file_path = os.path.join(self.backup_path, backup_file_base)
-            # print('Creating', backup_file_path, '... ', end='')
-            self.copy_output_file(input_file_path, backup_file_path)
-            print('done')
+    def make_backup_input_files(self):
+        backup_file_base, backup_file_path = self._get_backup_archive_path()
+        print('Creating backup file', backup_file_path)
+        zipf = ZipFile(
+            backup_file_path, 'w', compression=zipfile.ZIP_STORED, allowZip64=True
+        )
+        for input_path in self.input_filelist:
+            input_path_basename = os.path.split(input_path)
+#             arch_file_path = '{}{}'.format(, subdir_extension)
+#             print('Adding', arch_file_path, '... ', end='')
+#             self.add_arch_file(zipf, input_path, arch_file_path)
+#             print('done')
+        zipf.close()
+
+
+    def make_backup_output_files(self):
+        _, backup_file_path = self._get_backup_archive_path()
+        print('Creating backup file', backup_file_path)
+        zipf = ZipFile(
+            backup_file_path, 'w', compression=zipfile.ZIP_STORED, allowZip64=True
+        )
+        for subdir_basename, subdir_extensions in self._subdirs.items():
+            for input_path, subdir_extension in subdir_extensions:
+                arch_file_path = os.path.join(
+                    subdir_basename, 
+                    '{}{}'.format(subdir_basename, subdir_extension)
+                )
+                print('Adding', arch_file_path, '... ', end='')
+                self.add_arch_file(zipf, input_path, arch_file_path)
+                print('done')
+        zipf.close()
 
     def copy_output_file(self, file_input_path, file_output_path):
         # shutil.copy2(file_input_path, file_output_path)
@@ -78,6 +105,11 @@ class OutputLocationManager:
         with open(file_output_path, 'w') as wf:
             pass
         # TODO: stub
+
+
+    def add_arch_file(self, zipfile, input_path, arch_file_path):
+        zipfile.write(input_path, arch_file_path)
+
 
     def _list_input_files(self):
         return [os.path.join(self.input_path, p) for p in os.listdir(self.input_path)]
@@ -92,6 +124,13 @@ class OutputLocationManager:
         extensions = os.path.basename(path).split(os.extsep)[1:]
         return (path_without_extensions, path_basename, '.'+'.'.join(extensions))
 
+    def _get_backup_archive_path(self):
+        os.stat_float_times(False)
+        input_create_time_ts = os.stat(self.input_filelist[0]).st_ctime
+        input_create_time = datetime.fromtimestamp(input_create_time_ts).strftime("%d_%m_%Y_%H_%M_%S")
+        backup_file_base = 'run_{}.zip'.format(input_create_time)
+        backup_file_path = os.path.join(self.backup_path, backup_file_base)
+        return backup_file_base, backup_file_path
 
 if __name__ == '__main__':
     olm = OutputLocationManager(
@@ -102,27 +141,30 @@ if __name__ == '__main__':
 #         output_path='C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_output_path_1',
 #         backup_path='C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_backup_path_1',
     )
-    print('Number of samples')
-    print(olm.number_of_samples)
-    print('Creating output')
-    olm.make_output_files()
-    print('Creating backup')
-    olm.make_backup_files()
-    print('Number of samples')
-    print(olm.number_of_samples)
-    print('Preferred extensions:', olm.preferred_extensions)
+#     print('Number of samples')
+#     print(olm.number_of_samples)
+#     print('Creating output')
+#     olm.make_output_files()
+#     print('Creating backup')
+#     olm.make_backup_files()
+#     print('Number of samples')
+#     print(olm.number_of_samples)
+#     print('Preferred extensions:', olm.preferred_extensions)
 
-    print('New path')
+#     print('New path')
 
-    olm.set_input_path('C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_input_path_1')
-    olm.set_output_path('C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_output_path_1')
-    olm.set_backup_path('C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_backup_path_1')
-    print('Number of samples')
-    print(olm.number_of_samples)
-    print('Creating output')
-    olm.make_output_files()
+#     olm.set_input_path('C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_input_path_1')
+#     olm.set_output_path('C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_output_path_1')
+#     olm.set_backup_path('C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_backup_path_1')
+#     print('Number of samples')
+#     print(olm.number_of_samples)
+#     print('Creating output')
+#     olm.make_output_files()
+#     print('Creating backup')
+#     olm.make_backup_files()
+#     print('Number of samples')
+#     print(olm.number_of_samples)
+#     print('Preferred extensions:', olm.preferred_extensions)
+
     print('Creating backup')
-    olm.make_backup_files()
-    print('Number of samples')
-    print(olm.number_of_samples)
-    print('Preferred extensions:', olm.preferred_extensions)
+    olm.make_backup_input_files()

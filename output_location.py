@@ -71,7 +71,9 @@ class OutputLocationManager:
                 print('done')
 
     def make_backup_input_files(self):
-        backup_file_base, backup_file_path = self._get_backup_archive_path()
+        backup_file_base, backup_file_path = (
+            self._get_backup_archive_path(mode_suffix='input')
+        )
         backup_file_dir, _ = os.path.splitext(backup_file_base)
         print('Creating backup file', backup_file_path)
         zipf = ZipFile(
@@ -86,7 +88,7 @@ class OutputLocationManager:
         zipf.close()
 
     def make_backup_output_files(self):
-        _, backup_file_path = self._get_backup_archive_path()
+        _, backup_file_path = self._get_backup_archive_path(mode_suffix='output')
         print('Creating backup file', backup_file_path)
         zipf = ZipFile(
             backup_file_path, 'w', compression=zipfile.ZIP_DEFLATED, allowZip64=True
@@ -128,11 +130,11 @@ class OutputLocationManager:
         extensions = os.path.basename(path).split(os.extsep)[1:]
         return (path_without_extensions, path_basename, '.'+'.'.join(extensions))
 
-    def _get_backup_archive_path(self):
+    def _get_backup_archive_path(self, mode_suffix='input'):
         os.stat_float_times(False)
         input_create_time_ts = os.stat(self.input_filelist[0]).st_ctime
         input_create_time = datetime.fromtimestamp(input_create_time_ts).strftime("%d_%m_%Y_%H_%M_%S")
-        backup_file_base = 'run_{}.zip'.format(input_create_time)
+        backup_file_base = 'run_{}_{}.zip'.format(input_create_time, mode_suffix)
         backup_file_path = os.path.join(self.backup_path, backup_file_base)
         return backup_file_base, backup_file_path
 

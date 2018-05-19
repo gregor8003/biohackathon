@@ -1,0 +1,73 @@
+<GridLayout>:
+    col: 1
+    rows: 2
+    spacing: 10
+    padding: 10
+
+    FileChooser:
+        FileChooserIconLayout
+
+    BoxLayout:
+        height: 100
+        orientation: 'vertical'
+        size_hint_y: None
+
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                text: ''
+
+
+            Label:
+                text: ''
+
+            Label:
+                text: ''
+
+            Label:
+                text: 'Source backup'
+
+            Label:
+                text: 'Output backup'
+
+            Label:
+                text: 'Sample'
+
+
+        BoxLayout:
+            orientation: 'horizontal'
+            Button:
+                text: 'Run'
+                width: 200
+
+            Button:
+                text: 'Source backup'
+
+            Button:
+                text: 'Output backup'
+
+            CheckBox:
+                text: 'Run with source backup'
+
+            CheckBox:
+                text: 'Run with output backup'
+
+            Label:
+                text: '20'
+
+        BoxLayout:
+
+            orientation: 'horizontal'
+            Label:
+
+                id: 'path_label'
+                height: '32dp'
+                text: 'Input path'
+
+            Button:
+                size_hint_x: None
+                text: 'Output path'
+                width: 100
+
+
+

@@ -10,8 +10,12 @@ from kivy.uix.gridlayout import GridLayout
 class Archiver(App):
     label_1 = 'SSSSSSSSSS'
 
-    def build(self):
+    def method(self):
+        a = 1 + 1
+        print('DUPA')
+        return a
 
+    def build(self):
         return GridLayout()
 
 if __name__ == '__main__':

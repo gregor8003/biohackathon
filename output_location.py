@@ -71,7 +71,7 @@ class OutputLocationManager:
         backup_file_dir, _ = os.path.splitext(backup_file_base)
         print('Creating backup file', backup_file_path)
         zipf = ZipFile(
-            backup_file_path, 'w', compression=zipfile.ZIP_STORED, allowZip64=True
+            backup_file_path, 'w', compression=zipfile.ZIP_DEFLATED, allowZip64=True
         )
         for input_path in self.input_filelist:
             _, input_path_basename = os.path.split(input_path)
@@ -85,7 +85,7 @@ class OutputLocationManager:
         _, backup_file_path = self._get_backup_archive_path()
         print('Creating backup file', backup_file_path)
         zipf = ZipFile(
-            backup_file_path, 'w', compression=zipfile.ZIP_STORED, allowZip64=True
+            backup_file_path, 'w', compression=zipfile.ZIP_DEFLATED, allowZip64=True
         )
         for subdir_basename, subdir_extensions in self._subdirs.items():
             for input_path, subdir_extension in subdir_extensions:
@@ -141,30 +141,30 @@ if __name__ == '__main__':
 #         output_path='C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_output_path_1',
 #         backup_path='C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_backup_path_1',
     )
-    print('Number of samples')
-    print(olm.number_of_samples)
-    print('Creating output')
-    olm.make_output_files()
-    print('Creating backup')
-    olm.make_backup_files()
-    print('Number of samples')
-    print(olm.number_of_samples)
-    print('Preferred extensions:', olm.preferred_extensions)
+#     print('Number of samples')
+#     print(olm.number_of_samples)
+#     print('Creating output')
+#     olm.make_output_files()
+#     print('Creating backup')
+#     olm.make_backup_output_files()
+#     print('Number of samples')
+#     print(olm.number_of_samples)
+#     print('Preferred extensions:', olm.preferred_extensions)
 
-    print('New path')
-
-    olm.set_input_path('C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_input_path_1')
-    olm.set_output_path('C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_output_path_1')
-    olm.set_backup_path('C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_backup_path_1')
-    print('Number of samples')
-    print(olm.number_of_samples)
-    print('Creating output')
-    olm.make_output_files()
-    print('Creating backup')
-    olm.make_backup_files()
-    print('Number of samples')
-    print(olm.number_of_samples)
-    print('Preferred extensions:', olm.preferred_extensions)
+#     print('New path')
+# 
+#     olm.set_input_path('C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_input_path_1')
+#     olm.set_output_path('C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_output_path_1')
+#     olm.set_backup_path('C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_backup_path_1')
+#     print('Number of samples')
+#     print(olm.number_of_samples)
+#     print('Creating output')
+#     olm.make_output_files()
+#     print('Creating backup')
+#     olm.make_backup_output_files()
+#     print('Number of samples')
+#     print(olm.number_of_samples)
+#     print('Preferred extensions:', olm.preferred_extensions)
 
     print('Creating backup')
     olm.make_backup_input_files()

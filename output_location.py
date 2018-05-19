@@ -49,6 +49,7 @@ class OutputLocationManager:
             self.backup_path = backup_path
 
     def make_output_files(self):
+        print('in output')
         for subdir_basename, subdir_extensions in self._subdirs.items():
             subdir_output_path_prefix = os.path.join(self.output_path, subdir_basename)
             if not os.path.exists(subdir_output_path_prefix):
@@ -58,7 +59,7 @@ class OutputLocationManager:
                     subdir_output_path_prefix,
                     '{}{}'.format(subdir_basename, subdir_extension)
                 )
-                print('Creating', subdir_output_path, '... ', end='')
+                # print('Creating', subdir_output_path, '... ', end='')
                 self.copy_output_file(input_path, subdir_output_path)
                 print('done')
 
@@ -66,7 +67,7 @@ class OutputLocationManager:
         for input_file_path in self.input_filelist:
             _, backup_file_base = os.path.split(input_file_path)
             backup_file_path = os.path.join(self.backup_path, backup_file_base)
-            print('Creating', backup_file_path, '... ', end='')
+            # print('Creating', backup_file_path, '... ', end='')
             self.copy_output_file(input_file_path, backup_file_path)
             print('done')
 

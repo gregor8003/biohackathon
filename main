@@ -26,11 +26,13 @@ class Archiver(App):
 
     label_1 = '0'
 
-    input_path = 'C:\Test\Input\data'
-    output_path = os.path.abspath(os.path.join('C:\Test\Input'))
-    backup_path = os.path.abspath(os.path.join('C:\Test\Input'))
+    input_path = 'C:\Test\Input'
+    output_path = 'C:\Test\Output'
+    backup_path = 'C:\Test\Backup'
 
     dupa = OutputLocationManager(input_path, output_path, backup_path)
+
+
 
     print(label_1)
     if dupa:

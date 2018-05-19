@@ -82,14 +82,14 @@ class OutputLocationManager:
         for input_path in self.input_filelist:
             _, input_path_basename = os.path.split(input_path)
             arch_file_path = os.path.join(backup_file_dir, input_path_basename)
-            print('Adding', arch_file_path, '... ', end='')
+            # print('Adding', arch_file_path, '... ', end='')
             self.add_arch_file(zipf, input_path, arch_file_path)
             print('done')
         zipf.close()
 
     def make_backup_output_files(self):
         _, backup_file_path = self._get_backup_archive_path(mode_suffix='output')
-        print('Creating backup file', backup_file_path)
+        print('Creating output backup file', backup_file_path)
         zipf = ZipFile(
             backup_file_path, 'w', compression=zipfile.ZIP_DEFLATED, allowZip64=True
         )
@@ -99,7 +99,7 @@ class OutputLocationManager:
                     subdir_basename, 
                     '{}{}'.format(subdir_basename, subdir_extension)
                 )
-                print('Adding', arch_file_path, '... ', end='')
+                # print('Adding', arch_file_path, '... ', end='')
                 self.add_arch_file(zipf, input_path, arch_file_path)
                 print('done')
         zipf.close()

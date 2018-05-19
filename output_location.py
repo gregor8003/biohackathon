@@ -20,6 +20,10 @@ class OutputLocationManager:
             self.input_filelist = self._list_input_files()
         self.number_of_samples = None
         self.preferred_extensions = preferred_extensions
+        self._init_subdirs()
+
+    def _init_subdirs(self):
+        self.input_filelist = self._list_input_files()
         self._subdirs = self._identify_output_subdirs()
 
     def _identify_output_subdirs(self):
@@ -31,6 +35,19 @@ class OutputLocationManager:
         self.number_of_samples = len(subdirs)
         return subdirs
 
+    def set_input_path(self, input_path):
+        if input_path is not None:
+            self.input_path = input_path
+            self._init_subdirs()
+
+    def set_output_path(self, output_path):
+        if output_path is not None:
+            self.output_path = output_path
+
+    def set_backup_path(self, backup_path):
+        if backup_path is not None:
+            self.backup_path = backup_path
+
     def make_output_files(self):
         for subdir_basename, subdir_extensions in self._subdirs.items():
             subdir_output_path_prefix = os.path.join(self.output_path, subdir_basename)
@@ -41,7 +58,7 @@ class OutputLocationManager:
                     subdir_output_path_prefix,
                     '{}{}'.format(subdir_basename, subdir_extension)
                 )
-                # print('Creating', subdir_output_path, '... ', end='')
+                print('Creating', subdir_output_path, '... ', end='')
                 self.copy_output_file(input_path, subdir_output_path)
                 print('done')
 
@@ -49,7 +66,7 @@ class OutputLocationManager:
         for input_file_path in self.input_filelist:
             _, backup_file_base = os.path.split(input_file_path)
             backup_file_path = os.path.join(self.backup_path, backup_file_base)
-            # print('Creating', backup_file_path, '... ', end='')
+            print('Creating', backup_file_path, '... ', end='')
             self.copy_output_file(input_file_path, backup_file_path)
             print('done')
 
@@ -84,6 +101,21 @@ if __name__ == '__main__':
 #         output_path='C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_output_path_1',
 #         backup_path='C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_backup_path_1',
     )
+    print('Number of samples')
+    print(olm.number_of_samples)
+    print('Creating output')
+    olm.make_output_files()
+    print('Creating backup')
+    olm.make_backup_files()
+    print('Number of samples')
+    print(olm.number_of_samples)
+    print('Preferred extensions:', olm.preferred_extensions)
+
+    print('New path')
+
+    olm.set_input_path('C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_input_path_1')
+    olm.set_output_path('C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_output_path_1')
+    olm.set_backup_path('C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_backup_path_1')
     print('Number of samples')
     print(olm.number_of_samples)
     print('Creating output')

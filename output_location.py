@@ -53,6 +53,7 @@ class OutputLocationManager:
 
     def set_preferred_extensions(self, preferred_extensions):
         self.preferred_extensions = preferred_extensions
+        self._init_subdirs()
 
     def make_output_files(self):
         print('in output')

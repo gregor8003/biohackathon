@@ -5,21 +5,29 @@ import shutil
 
 class OutputLocationManager:
 
-    def __init__(self, input_path=None, output_path=None, input_filelist=None):
+    def __init__(self, input_path=None, output_path=None, backup_path=None,
+                 preferred_extensions=('.bam', '.bam.bai', '.vcf', '.vcf.gz'),
+                 input_filelist=None):
         if input_path is not None:
             self.input_path = input_path
         if output_path is not None:
             self.output_path = output_path
+        if backup_path is not None:
+            self.backup_path = backup_path
         if input_filelist is not None:
             self.input_filelist = input_filelist
         else:
             self.input_filelist = self._list_input_files()
+        self.number_of_samples = None
+        self.preferred_extensions = preferred_extensions
 
     def _identify_output_subdirs(self):
         subdirs = collections.defaultdict(list)
-        for l in self.input_filelist:
-            _, path_basename, extension = self._splitext_path_with_dots(l)
-            subdirs[path_basename].append((l, extension))
+        for input_file_path in self.input_filelist:
+            _, path_basename, extension = self._splitext_path_with_dots(input_file_path)
+            if extension in self.preferred_extensions:
+                subdirs[path_basename].append((input_file_path, extension))
+        self.number_of_samples = len(subdirs)
         return subdirs
 
     def make_output_files(self):
@@ -36,6 +44,14 @@ class OutputLocationManager:
                 print('Creating', subdir_output_path, '... ', end='')
                 self.copy_output_file(input_path, subdir_output_path)
                 print('done')
+
+    def make_backup_files(self):
+        for input_file_path in self.input_filelist:
+            _, backup_file_base = os.path.split(input_file_path)
+            backup_file_path = os.path.join(self.backup_path, backup_file_base)
+            print('Creating', backup_file_path, '... ', end='')
+            self.copy_output_file(input_file_path, backup_file_path)
+            print('done')
 
     def copy_output_file(self, file_input_path, file_output_path):
         # shutil.copy2(file_input_path, file_output_path)
@@ -62,6 +78,16 @@ class OutputLocationManager:
 if __name__ == '__main__':
     olm = OutputLocationManager(
         input_path='C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_input_path',
-        output_path='C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_output_path'
+        output_path='C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_output_path',
+        backup_path='C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_backup_path',
+#         input_path='C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_input_path_1',
+#         output_path='C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_output_path_1',
+#         backup_path='C:\\Users\\Public\\Documents\\incoming\\bio-related\\biohackathon_backup_path_1',
     )
-    print(olm.make_output_files())
+    print('Creating output')
+    olm.make_output_files()
+    print('Creating backup')
+    olm.make_backup_files()
+    print('Number of samples')
+    print(olm.number_of_samples)
+    print('Preferred extensions:', olm.preferred_extensions)

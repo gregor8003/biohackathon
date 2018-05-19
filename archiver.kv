@@ -44,25 +44,26 @@
                 Button:
                     text: 'Run'
                     width: 200
-                    on_press: app.dupa.make_output_files()
+                    on_press: app.run_operations()
 
                 Button:
                     text: 'Source backup'
-                    on_press: app.dupa.make_backup_files()
+                    on_press: app.output_manager.make_backup_files()
 
                 Button:
                     text: 'Output backup'
-                    on_press: app.method()
+                    on_press: app.run_operations()
 
                 CheckBox:
                     text: 'Run with source backup'
+                    on_active: app.checkbox_clicked()
 
                 CheckBox:
                     text: 'Run with output backup'
 
                 Label:
-                    id: label_1
-                    text: app.label_1
+                    id: sample_label
+                    text: app.sample_label
 
             BoxLayout:
 
@@ -71,6 +72,8 @@
 
                     id: 'input_path_label'
                     height: '32dp'
+                    text: app.output_path
+
 
                 Button:
                     size_hint_x: None
@@ -84,7 +87,7 @@
 
                     id: 'path_label'
                     height: '32dp'
-                    text: 'Backup path'
+                    text: app.backup_path
 
                 Button:
                     size_hint_x: None

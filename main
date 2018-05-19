@@ -30,16 +30,31 @@ class Archiver(App):
     output_path = 'C:\Test\Output'
     backup_path = 'C:\Test\Backup'
 
-    dupa = OutputLocationManager(input_path, output_path, backup_path)
+    output_manager = OutputLocationManager(input_path, output_path, backup_path)
 
+    checkbox_is_active = False
 
+    def checkbox_clicked(self):
+        if not self.checkbox_is_active:
+            self.checkbox_is_active = True
+        else:
+            self.checkbox_is_active = False
 
-    print(label_1)
-    if dupa:
-        label_1 = str(dupa.number_of_samples)
+        print ('checkbox: ', self.checkbox_is_active)
+
+    def run_operations(self):
+        if self.checkbox_is_active:
+            self.output_manager.make_output_files()
+            self.output_manager.make_backup_files()
+        else:
+            self.output_manager.make_output_files()
+
+    if output_manager:
+        sample_label = str(output_manager.number_of_samples)
 
     def method(self):
         a = 1 + 1
+        print('output_manager')
         return a
 
     def build(self):

@@ -6,8 +6,11 @@
         spacing: 10
         padding: 10
 
-        FileChooser:
-            FileChooserListLayout
+        FileChooserListView:
+            dirselect: True
+            id: filechooser
+            filters: [root.is_dir]
+            on_selection: app.input_path = self.selection and self.selection[0] or ''
 
         BoxLayout:
             height: 150
@@ -64,9 +67,8 @@
                 orientation: 'horizontal'
                 Label:
 
-                    id: 'path_label'
+                    id: 'input_path_label'
                     height: '32dp'
-                    text: 'Input path'
 
                 Button:
                     size_hint_x: None

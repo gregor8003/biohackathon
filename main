@@ -13,7 +13,9 @@ class ScreenOne(Screen):
     pass
 
 class ScreenTwo(Screen):
-    pass
+
+    def is_dir(self, directory, filename):
+        return os.path.isdir(os.path.join(directory, filename))
 
 
 class Manager(ScreenManager):
